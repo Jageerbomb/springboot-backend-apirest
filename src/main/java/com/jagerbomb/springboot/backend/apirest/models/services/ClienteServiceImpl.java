@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Service
-public class ClienteServiceImpl implements IClienteService{
+public class ClienteServiceImpl implements IClienteService {
 
     @Autowired
     private IClienteDAO clienteDAO;
@@ -20,4 +20,24 @@ public class ClienteServiceImpl implements IClienteService{
     public List<Cliente> findAll() {
         return (List<Cliente>) clienteDAO.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Cliente findById(Long id) {
+        return clienteDAO.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public Cliente save(Cliente cliente) {
+        return clienteDAO.save(cliente);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        clienteDAO.deleteById(id);
+    }
+
+
 }
