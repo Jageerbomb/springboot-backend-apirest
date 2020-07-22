@@ -1,5 +1,7 @@
 package com.jagerbomb.springboot.backend.apirest.models.entity;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

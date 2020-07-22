@@ -2,14 +2,13 @@ package com.jagerbomb.springboot.backend.apirest.controllers;
 
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost.4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4300"})
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
@@ -22,29 +21,34 @@ public class ClienteRestController {
         return clienteService.findAll();
     }
 
-    @PostMapping("/clientes") //post para crear / por envio de dato
+    @GetMapping("/clientes/{id}")
+    public Cliente findById(@PathVariable Long id) {
+        return clienteService.findById(id);
+    }
+
+    @PostMapping("/clientes")
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente findById(@RequestBody Cliente cliente){
+    public Cliente save(@RequestBody Cliente cliente) {
         return clienteService.save(cliente);
     }
 
     @PutMapping("/clientes/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id){
-        Cliente clienteTmp = clienteService.findById(id);
-        clienteTmp.setNombre(cliente.getNombre());
-        clienteTmp.setApellido(cliente.getApellido());
-        clienteTmp.setCreateAt(cliente.getCreateAt());
-        clienteTmp.setEmail(cliente.getEmail());
-        return clienteService.save(clienteTmp);
+    public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
+        Cliente clienteActual = clienteService.findById(id);
 
+        clienteActual.setNombre(cliente.getNombre());
+        clienteActual.setApellido(cliente.getApellido());
+        clienteActual.setCreateAt(cliente.getCreateAt());
+        clienteActual.setEmail(cliente.getEmail());
+
+        return clienteService.save(clienteActual);
     }
 
     @DeleteMapping("clientes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         clienteService.delete(id);
     }
-
 
 }
