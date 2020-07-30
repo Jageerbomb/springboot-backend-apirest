@@ -1,6 +1,8 @@
 package com.jagerbomb.springboot.backend.apirest.models.entity;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+
     private String apellido;
     private String email;
 
