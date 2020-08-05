@@ -1,6 +1,5 @@
 package com.jagerbomb.springboot.backend.apirest;
 
-import com.jagerbomb.springboot.backend.apirest.controllers.ClienteRestController;
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,6 @@ class SpringBootBackendApirestApplicationTests {
         cliente.setEmail("test@test.cl");
         cliente.setCreateAt(new Date());
 
-        clienteService.save(cliente);
+        clienteService.create(cliente);
     }
 }

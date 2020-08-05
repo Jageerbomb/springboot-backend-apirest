@@ -9,7 +9,7 @@ public interface IClienteService {
 
     public Cliente findById(Long id);
 
-    public Cliente save(Cliente cliente);
+    public Cliente create(Cliente cliente);
 
     public void delete(Long id);
 }

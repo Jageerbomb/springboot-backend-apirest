@@ -29,7 +29,7 @@ public class ClienteServiceImpl implements IClienteService {
 
     @Override
     @Transactional
-    public Cliente save(Cliente cliente) {
+    public Cliente create(Cliente cliente) {
         return clienteDAO.save(cliente);
     }
 
