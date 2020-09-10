@@ -25,6 +25,6 @@ class SpringBootBackendApirestApplicationTests {
         cliente.setEmail("test@test.cl");
         cliente.setCreateAt(new Date());
 
-        clienteService.create(cliente);
+        //clienteService.create(cliente);
     }
 }
