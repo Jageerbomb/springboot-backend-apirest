@@ -141,18 +141,18 @@ public class ClienteRestController {
 
         Cliente cliente = clienteService.findById(id);
         if (!archivo.isEmpty()) {
-            String nombreArchivo = archivo.getOriginalFilename();
+            String nombreArchivo = UUID.randomUUID() + "_" + archivo.getOriginalFilename().replace(" ","");
             Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
 
             try {
-                Files.copy(archivo.getInputStream(),rutaArchivo);
+                Files.copy(archivo.getInputStream(), rutaArchivo);
             } catch (IOException e) {
                 response.put("mensaje", "Error al subir la imagen del cliente " + nombreArchivo);
                 response.put("error", e.getMessage() + ":" + e.getCause().getMessage());
                 return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
-
+            cliente.setFoto(nombreArchivo);
+            response.put("cliente", cliente);
             response.put("mensaje", "El archivo se ha subido correctamente " + nombreArchivo);
         }
 
