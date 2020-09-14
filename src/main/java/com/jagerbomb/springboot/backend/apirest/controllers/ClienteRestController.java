@@ -3,6 +3,8 @@ package com.jagerbomb.springboot.backend.apirest.controllers;
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
 import org.aspectj.weaver.AnnotationOnTypeMunger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -35,6 +37,9 @@ public class ClienteRestController {
 
     @Autowired
     private IClienteService clienteService;
+
+    private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
+
 
     @GetMapping("/clientes")
     public List<Cliente> index() {
@@ -177,6 +182,7 @@ public class ClienteRestController {
             }
 
             cliente.setFoto(nombreArchivo);
+            clienteService.create(cliente);
             response.put("cliente", cliente);
             response.put("mensaje", "El archivo se ha subido correctamente " + nombreArchivo);
         }
@@ -187,6 +193,7 @@ public class ClienteRestController {
     @GetMapping("/uploads/img/{nombreFoto:.+}")
     public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
         Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+        log.info(rutaArchivo.toString());
         Resource recurso = null;
         try {
             recurso = new UrlResource(rutaArchivo.toUri());
