@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -125,6 +126,17 @@ public class ClienteRestController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
+
+            Cliente cliente = clienteService.findById(id);
+            String nombreArchivoAnterior = cliente.getFoto();
+            if (nombreArchivoAnterior != null && nombreArchivoAnterior.length() > 0) {
+                Path rutaArchivoAnterior = Paths.get("uploads").resolve(nombreArchivoAnterior).toAbsolutePath();
+                File archivoFotoAnterior = rutaArchivoAnterior.toFile();
+                if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()){
+                    archivoFotoAnterior.delete();
+                }
+            }
+
             clienteService.delete(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al eliminar el cliente de la base de datos");
@@ -136,12 +148,12 @@ public class ClienteRestController {
     }
 
     @PostMapping("/clientes/upload")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile archivo, @RequestParam("id") Long id) {
+    public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
         Map<String, Object> response = new HashMap<>();
 
         Cliente cliente = clienteService.findById(id);
         if (!archivo.isEmpty()) {
-            String nombreArchivo = UUID.randomUUID() + "_" + archivo.getOriginalFilename().replace(" ","");
+            String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
             Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
 
             try {
@@ -151,6 +163,15 @@ public class ClienteRestController {
                 response.put("error", e.getMessage() + ":" + e.getCause().getMessage());
                 return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
+            String nombreArchivoAnterior = cliente.getFoto();
+            if (nombreArchivoAnterior != null && nombreArchivoAnterior.length() > 0) {
+                Path rutaArchivoAnterior = Paths.get("uploads").resolve(nombreArchivoAnterior).toAbsolutePath();
+                File archivoFotoAnterior = rutaArchivoAnterior.toFile();
+                if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()){
+                    archivoFotoAnterior.delete();
+                }
+            }
+
             cliente.setFoto(nombreArchivo);
             response.put("cliente", cliente);
             response.put("mensaje", "El archivo se ha subido correctamente " + nombreArchivo);
