@@ -4,10 +4,13 @@ import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
 import org.aspectj.weaver.AnnotationOnTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -132,7 +136,7 @@ public class ClienteRestController {
             if (nombreArchivoAnterior != null && nombreArchivoAnterior.length() > 0) {
                 Path rutaArchivoAnterior = Paths.get("uploads").resolve(nombreArchivoAnterior).toAbsolutePath();
                 File archivoFotoAnterior = rutaArchivoAnterior.toFile();
-                if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()){
+                if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
                     archivoFotoAnterior.delete();
                 }
             }
@@ -167,7 +171,7 @@ public class ClienteRestController {
             if (nombreArchivoAnterior != null && nombreArchivoAnterior.length() > 0) {
                 Path rutaArchivoAnterior = Paths.get("uploads").resolve(nombreArchivoAnterior).toAbsolutePath();
                 File archivoFotoAnterior = rutaArchivoAnterior.toFile();
-                if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()){
+                if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
                     archivoFotoAnterior.delete();
                 }
             }
@@ -178,5 +182,23 @@ public class ClienteRestController {
         }
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/uploads/img/{nombreFoto:.+}")
+    public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
+        Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+        Resource recurso = null;
+        try {
+            recurso = new UrlResource(rutaArchivo.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if(!recurso.exists() && !recurso.isReadable()){
+            throw new RuntimeException("Error no se pudo cargar la imagen: " + nombreFoto);
+        }
+        HttpHeaders cabecera = new HttpHeaders();
+        cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ recurso.getFilename()+ "\"");
+
+        return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
 }
