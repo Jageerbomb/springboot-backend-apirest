@@ -1,6 +1,7 @@
 package com.jagerbomb.springboot.backend.apirest.models.services;
 
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
+import com.jagerbomb.springboot.backend.apirest.models.entity.Region;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,6 @@ public interface IClienteService {
     public Cliente create(Cliente cliente);
 
     public void delete(Long id);
+
+    public List<Region> findAllRegion();
 }

@@ -2,6 +2,7 @@ package com.jagerbomb.springboot.backend.apirest.models.services;
 
 import com.jagerbomb.springboot.backend.apirest.models.dao.IClienteDAO;
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
+import com.jagerbomb.springboot.backend.apirest.models.entity.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,12 @@ public class ClienteServiceImpl implements IClienteService {
     @Transactional
     public void delete(Long id) {
         clienteDAO.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Region> findAllRegion() {
+        return clienteDAO.findAllRegion();
     }
 
 

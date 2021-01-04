@@ -1,6 +1,7 @@
 package com.jagerbomb.springboot.backend.apirest.controllers;
 
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
+import com.jagerbomb.springboot.backend.apirest.models.entity.Region;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
 import org.aspectj.weaver.AnnotationOnTypeMunger;
 import org.slf4j.Logger;
@@ -120,6 +121,7 @@ public class ClienteRestController {
             clienteActual.setApellido(cliente.getApellido());
             clienteActual.setEmail(cliente.getEmail());
             clienteActual.setCreateAt(cliente.getCreateAt());
+            clienteActual.setRegion(cliente.getRegion());
             clienteActualizado = clienteService.create(clienteActual);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al actualizar cliente en base de datos");
@@ -207,5 +209,10 @@ public class ClienteRestController {
         cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ recurso.getFilename()+ "\"");
 
         return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
+    }
+
+    @GetMapping("/clientes/regiones")
+    public List<Region> regionList(){
+        return clienteService.findAllRegion();
     }
 }

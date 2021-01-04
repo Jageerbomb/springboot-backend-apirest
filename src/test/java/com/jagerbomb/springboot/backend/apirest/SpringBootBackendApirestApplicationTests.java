@@ -19,11 +19,6 @@ class SpringBootBackendApirestApplicationTests {
 
     @Test
     public void testSaveClient() {
-        Cliente cliente = new Cliente();
-        cliente.setNombre("Testing");
-        cliente.setApellido("Testing");
-        cliente.setEmail("test@test.cl");
-        cliente.setCreateAt(new Date());
 
         //clienteService.create(cliente);
     }

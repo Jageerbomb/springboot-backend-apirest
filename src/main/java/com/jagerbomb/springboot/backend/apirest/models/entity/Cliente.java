@@ -1,5 +1,7 @@
 package com.jagerbomb.springboot.backend.apirest.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -35,6 +37,19 @@ public class Cliente implements Serializable {
     private Date createAt;
 
     private String foto;
+
+    /*
+    * @ManyToOne define la relacion a nivel de tablas de BD
+    * fetch define como se recibira el dato
+    * LAZY es carga perezosa, que es cuando se llama al atributo si estamos trabajando con una API Rest
+    * @JoinColumn define el nombre de la variable, si no se coloca, toma por defecto el nombre del atributo
+    * @JsonIgnoreProperties omite los atributos creados por el proxy que genera LAZY del JSON, manteniendo solo los atributos de region
+    */
+    @NotNull(message = "no puede estar vacia")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private Region region;
 
     public Long getId() {
         return id;
@@ -84,4 +99,11 @@ public class Cliente implements Serializable {
         this.foto = foto;
     }
 
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
 }
