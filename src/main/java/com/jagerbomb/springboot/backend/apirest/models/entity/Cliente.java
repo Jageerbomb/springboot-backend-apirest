@@ -16,20 +16,22 @@ public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotEmpty(message = "no puede estar vacío")
     @Size(min = 4, max = 12, message = "el tamaño debe estar entre 4 y 12 caracteres")
-    @Column(nullable = false)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
     @NotEmpty(message = "no puede estar vacío")
+    @Column(name = "apellido")
     private String apellido;
 
     @NotEmpty(message = "no puede estar vacío")
     @Email(message = "no es una dirección de correo bien formada")
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(name = "correo", nullable = false, unique = false)
+    private String correo;
 
     @NotNull(message = "no puede estar vacío")
     @Column(name = "create_at")
@@ -75,12 +77,12 @@ public class Cliente implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public Date getCreateAt() {

@@ -15,5 +15,5 @@ public interface IClienteDAO extends JpaRepository<Cliente, Long> {
     * Region es la clase Entity, ya que acá se trabaja con objetos, no tablas
     */
     @Query("from Region")
-    public List<Region> findAllRegion();
+    List<Region> findAllRegion();
 }

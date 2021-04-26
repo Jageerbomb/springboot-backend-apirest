@@ -3,7 +3,6 @@ package com.jagerbomb.springboot.backend.apirest.controllers;
 import com.jagerbomb.springboot.backend.apirest.models.entity.Cliente;
 import com.jagerbomb.springboot.backend.apirest.models.entity.Region;
 import com.jagerbomb.springboot.backend.apirest.models.services.IClienteService;
-import org.aspectj.weaver.AnnotationOnTypeMunger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +118,7 @@ public class ClienteRestController {
         try {
             clienteActual.setNombre(cliente.getNombre());
             clienteActual.setApellido(cliente.getApellido());
-            clienteActual.setEmail(cliente.getEmail());
+            clienteActual.setCorreo(cliente.getCorreo());
             clienteActual.setCreateAt(cliente.getCreateAt());
             clienteActual.setRegion(cliente.getRegion());
             clienteActualizado = clienteService.create(clienteActual);
