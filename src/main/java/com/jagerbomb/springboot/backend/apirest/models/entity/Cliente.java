@@ -30,8 +30,8 @@ public class Cliente implements Serializable {
 
     @NotEmpty(message = "no puede estar vacío")
     @Email(message = "no es una dirección de correo bien formada")
-    @Column(name = "correo", nullable = false, unique = false)
-    private String correo;
+    @Column(name = "email", nullable = false, unique = false)
+    private String email;
 
     @NotNull(message = "no puede estar vacío")
     @Column(name = "create_at")
@@ -77,12 +77,12 @@ public class Cliente implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getCreateAt() {

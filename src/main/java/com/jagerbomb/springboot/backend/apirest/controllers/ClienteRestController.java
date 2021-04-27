@@ -118,7 +118,7 @@ public class ClienteRestController {
         try {
             clienteActual.setNombre(cliente.getNombre());
             clienteActual.setApellido(cliente.getApellido());
-            clienteActual.setCorreo(cliente.getCorreo());
+            clienteActual.setEmail(cliente.getEmail());
             clienteActual.setCreateAt(cliente.getCreateAt());
             clienteActual.setRegion(cliente.getRegion());
             clienteActualizado = clienteService.create(clienteActual);
@@ -201,17 +201,22 @@ public class ClienteRestController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        if(!recurso.exists() && !recurso.isReadable()){
-            throw new RuntimeException("Error no se pudo cargar la imagen: " + nombreFoto);
+        if (!recurso.exists() && !recurso.isReadable()) {
+            rutaArchivo = Paths.get("src/main/resources/static/images").resolve("icon_user.png").toAbsolutePath();
+            try {
+                recurso = new UrlResource(rutaArchivo.toUri());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            log.error("Error no se pudo cargar la imagen: " + nombreFoto);
         }
         HttpHeaders cabecera = new HttpHeaders();
-        cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ recurso.getFilename()+ "\"");
-
+        cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
         return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
     }
 
     @GetMapping("/clientes/regiones")
-    public List<Region> regionList(){
+    public List<Region> regionList() {
         return clienteService.findAllRegion();
     }
 }
