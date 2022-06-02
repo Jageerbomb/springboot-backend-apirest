@@ -20,3 +20,19 @@
 - Verificamos que este creada la base de datos:
 > show databases;
 
+---
+
+## Soluciones 
+### Mac
+#### *ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)*
+Es probable que sea necesario actualizar la version de MySQL y volver a conectar la base de datos.
+Ejecutaremos los siguientes comandos:
+
+- Descargar la version de MySQL reciente
+> brew install mysql
+
+- Reiniciar servicios MySQL
+> brew services restart mysql
+
+- Conectar con base de datos MySQL
+> mysql -u root -p

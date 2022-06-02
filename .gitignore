@@ -30,3 +30,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.jpb
+.DS_Store
